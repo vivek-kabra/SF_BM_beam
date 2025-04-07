@@ -4,10 +4,26 @@ def analyze_beam(L, W1, W2, x):
     R_B_max= (W1*(L-x) + W2*L)/L
 
     #-------------------------------------------------------------------------
+    #BM_01 and SF_01 for at 0.5L for W1=0 metre (i.e. W1 at A):
+
+    R_A= (W1*L + W2*(L-x))/L #R_A in this case (which is equal to R_A_max)
+    if (x<=0.5*L):
+        BM_01= R_A*0.5*L - (W1*0.5*L + W2*(0.5*L-x))
+        SF_01= R_A - (W1+W2)
+    else:
+        BM_01= R_A*0.5*L - W1*0.5*L
+        SF_01= R_A-W1
+
+    #-------------------------------------------------------------------------
+    
+
+
 
     output= {
         "Max Reaction at A (kN)": R_A_max,
-        "Max Reaction at B (kN)": R_B_max
+        "Max Reaction at B (kN)": R_B_max,
+        "BM_01": BM_01,
+        "SF_01": SF_01
     }
     
     return output
