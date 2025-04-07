@@ -4,7 +4,7 @@ def analyze_beam(L, W1, W2, x):
     R_B_max= (W1*(L-x) + W2*L)/L
 
     #-------------------------------------------------------------------------
-    #BM_01 and SF_01 for at 0.5L for W1=0 metre (i.e. W1 at A):
+    #For W1 at 0 metre (i.e. W1 at A), BM_01 and SF_01 at 0.5L:
 
     R_A= (W1*L + W2*(L-x))/L #R_A in this case (which is equal to R_A_max)
     if (x<=0.5*L):
