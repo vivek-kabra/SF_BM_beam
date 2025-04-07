@@ -15,15 +15,32 @@ def analyze_beam(L, W1, W2, x):
         SF_01= R_A-W1
 
     #-------------------------------------------------------------------------
-    
+    #Max BM and SF:
 
+    #Max BM occurs at mid-point, i.e. at L/2 when both loads W1 and W2 are placed symmetrically about the mid-point
+    #Max SF occurs at either point A or B depending on whether R_A_max>R_B_max or R_B_max>R_A_max
+    #Max SF will occur at both points A and B if R_A_max=R_B_max
 
+    BM_max=(W1+W2)*(L-x)/4
+    SF_max=max(R_A_max, R_B_max)
+
+    loc_BM_max= L/2
+    loc_SF_max_1= 0
+    loc_SF_max_2=None #when R_A_max=R_B_max, two locations of SF_max will exist
+    if (R_B_max>R_A_max):
+        loc_SF_max_1= L
+    elif (R_A_max==R_B_max): #if (R_A_max=R_B_max)
+        loc_SF_max_1= 0
+        loc_SF_max_2= L 
 
     output= {
         "Max Reaction at A (kN)": R_A_max,
         "Max Reaction at B (kN)": R_B_max,
-        "BM_01": BM_01,
-        "SF_01": SF_01
+        "BM_01 (in kN-m)": BM_01,
+        "SF_01 (in kN)": SF_01,
+        "Location of BM_max from A (in metres)": loc_BM_max,
+        "Location of SF_max from A (in metres)": loc_SF_max_1,
+        "Location of SF_max_2 from A (in metres)": loc_SF_max_2
     }
     
     return output
@@ -39,5 +56,6 @@ if __name__ == "__main__":
     output=analyze_beam(L, W1, W2, x)
 
     for key, value in output.items():
-        print(f"{key}: {value:.3f}")
+        if (value!=None):
+            print(f"{key}: {value:.3f}")
 
