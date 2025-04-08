@@ -1,3 +1,5 @@
+import numpy as np
+import matplotlib.pyplot as plt
 def analyze_beam(L, W1, W2, x):
     #Max reactions at A and B:
     R_A_max= (W1*L + W2*(L-x))/L #Rxn increases at A as W1 comes closer to A (so for max rxn at A, W1 should be at A)
@@ -45,7 +47,60 @@ def analyze_beam(L, W1, W2, x):
     
     return output
 
+def plot_influence_lines(L, W1, W2, x):
+    positions= np.linspace(0, L, 1000)
+    BM= []
+    SF= []
 
+    for a in positions:
+        # Assume W1 is at `a`, W2 is at `a+x`, only if within the beam
+        if a + x > L:
+            BM.append(0)
+            SF.append(0)
+            continue
+
+        R_A= (W1*(L-a) + W2*(L-(a+x)))/L
+        R_B= (W1*a + W2*(a + x))/L
+
+        mid= L/2
+
+        #Shear force
+        if a <= mid:
+            if a+x <= mid:
+                sf= R_A-(W1 + W2)
+            else:
+                sf= R_A-W1
+        else:
+            sf= R_A
+        SF.append(sf)
+
+        #Bending moment at mid-point
+        moment= 0
+        if a <= mid:
+            moment+= W1*(mid-a)
+        if a+x <= mid:
+            moment += W2*(mid-(a + x))
+        BM.append(R_A*mid - moment)
+        
+
+    fig, axs = plt.subplots(2, 1, figsize=(10, 8))
+
+    axs[0].plot(positions, SF, label='Shear Force', color='blue')
+    axs[0].set_title('Influence Line for Shear Force')
+    axs[0].set_xlabel('Position of W1 (m)')
+    axs[0].set_ylabel('Shear Force (kN)')
+    axs[0].grid(True)
+    axs[0].legend()
+
+    axs[1].plot(positions, BM, label='Bending Moment at Midpoint', color='green')
+    axs[1].set_title('Influence Line for Bending Moment at Midpoint')
+    axs[1].set_xlabel('Position of W1 (m)')
+    axs[1].set_ylabel('Bending Moment (kNm)')
+    axs[1].grid(True)
+    axs[1].legend()
+
+    plt.tight_layout()
+    plt.show()
 
 if __name__ == "__main__":
     L=float(input("Enter the length of the beam (in metres): "))
@@ -58,4 +113,5 @@ if __name__ == "__main__":
     for key, value in output.items():
         if (value!=None):
             print(f"{key}: {value:.3f}")
-
+    
+    plot_influence_lines(L, W1, W2, x)
