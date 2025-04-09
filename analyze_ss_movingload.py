@@ -85,7 +85,7 @@ def plot_influence_lines(L, W1, W2, x):
 
     fig, axs = plt.subplots(2, 1, figsize=(10, 8))
 
-    axs[0].plot(positions, SF, label='Shear Force', color='blue')
+    axs[0].plot(positions, SF, label='Shear Force at Midpoint', color='blue')
     axs[0].set_title('Influence Line for Shear Force')
     axs[0].set_xlabel('Position of W1 (m)')
     axs[0].set_ylabel('Shear Force (kN)')
