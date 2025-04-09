@@ -64,7 +64,7 @@ def plot_influence_lines(L, W1, W2, x):
 
         mid= L/2
 
-        #Shear force
+        #Shear force at mid-point
         if a <= mid:
             if a+x <= mid:
                 sf= R_A-(W1 + W2)
